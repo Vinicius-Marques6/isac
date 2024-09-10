@@ -16,6 +16,7 @@
     "dotenv": "^16.4.5",
     "gifencoder": "^2.0.1",
     "isac": "file:",
+    "mongoose": "^8.6.1",
     "puppeteer": "^22.10.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-adblocker": "^2.13.6"

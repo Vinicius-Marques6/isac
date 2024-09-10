@@ -10,7 +10,7 @@ puppeteer.use(
 	})
 );
 
-async function imageOfTheDay(webhook, region = 'us') {
+async function _fetchImageOfTheDay(region) {
 	const browser = await puppeteer.launch({ headless: true });
 	const page = await browser.newPage();
 	await page.goto(`https://bing.gifposter.com/${region}`);
@@ -23,18 +23,38 @@ async function imageOfTheDay(webhook, region = 'us') {
 	
 	await Promise.all([
 		page.waitForNavigation(),
-        page.click('.fl')
-    ]);
+		page.click('.fl')
+	]);
 
 	try {
 		await page.waitForSelector('#bing_wallpaper');
 		const data = await page.$eval('#bing_wallpaper', img => {return {url: img.src, title: img.alt}});
-
-		await webhook.send({ content: `## ${time(new Date(), 'd')} \n### ${hyperlink(data.title, page.url())}`, files: [data.url]});
+		await browser.close();
+		return { data, pageUrl: page.url() };
 	} catch (error) {
 		console.error(error);
+		await browser.close();
+		return null;
 	}
-	await browser.close();
 }
 
-module.exports = imageOfTheDay;
+async function sendImageOfTheDay(channel = null, region = 'us') {
+	const { data, pageUrl} = await _fetchImageOfTheDay(region);
+
+	if (!data && !channel) {
+		return;
+	}
+
+	if (Array.isArray(channel)) {
+		for (const c of channel) {
+			await c.send({ content: `## ${time(new Date(), 'd')} \n### ${hyperlink(data.title, pageUrl)}`, files: [data.url]});
+		}
+		return;
+	} else {
+		await channel.send({ content: `## ${time(new Date(), 'd')} \n### ${hyperlink(data.title, pageUrl)}`, files: [data.url]});
+		return;
+	}
+
+}
+
+module.exports = sendImageOfTheDay;
