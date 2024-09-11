@@ -8,3 +8,7 @@ module.exports = mongoose.model(
         twitter_channel: { type: String, default: null }, // ID of the channel where tweets are sent
     }
 ));
+
+/**
+ * Schema inutilizado
+ */

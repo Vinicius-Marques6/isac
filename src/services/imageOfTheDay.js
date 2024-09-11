@@ -38,23 +38,22 @@ async function _fetchImageOfTheDay(region) {
 	}
 }
 
-async function sendImageOfTheDay(channel = null, region = 'us') {
+async function sendImageOfTheDay(channel, region = 'us') {
 	const { data, pageUrl} = await _fetchImageOfTheDay(region);
 
 	if (!data && !channel) {
 		return;
 	}
 
-	if (Array.isArray(channel)) {
-		for (const c of channel) {
-			await c.send({ content: `## ${time(new Date(), 'd')} \n### ${hyperlink(data.title, pageUrl)}`, files: [data.url]});
-		}
-		return;
-	} else {
-		await channel.send({ content: `## ${time(new Date(), 'd')} \n### ${hyperlink(data.title, pageUrl)}`, files: [data.url]});
-		return;
-	}
-
+	// if (Array.isArray(channel)) {
+	// 	for (const c of channel) {
+	// 		const ch = await c.guild.channels.fetch(c.wallpaper_channel);
+	// 		await ch.send({ content: `## ${time(new Date(), 'd')} \n### ${hyperlink(data.title, pageUrl)}`, files: [data.url]});
+	// 	}
+	// 	return;
+	// }
+	
+	await channel.send({ content: `## ${time(new Date(), 'd')} \n### ${hyperlink(data.title, pageUrl)}`, files: [data.url]});
 }
 
 module.exports = sendImageOfTheDay;

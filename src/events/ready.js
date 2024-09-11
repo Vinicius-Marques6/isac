@@ -1,6 +1,5 @@
 const { Events, ActivityType } = require('discord.js');
 const sendImageOfTheDay = require('../services/imageOfTheDay');
-const Guild = require('../database/schema/guild');
 require('dotenv').config();
 
 module.exports = {
@@ -17,8 +16,8 @@ module.exports = {
             //console.log(`Current time: ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`);
             if (date.getHours() === 7 && date.getMinutes() == 15 && date.getSeconds() == 0){
                 console.log('Sending image of the day');
-                const channels = await Guild.find({ wallpaper_channel: { $ne: null } });
-                sendImageOfTheDay(channels);
+                const channel = client.channels.cache.get(process.env.WALLPAPER_CHANNEL_ID);
+                sendImageOfTheDay(channel);
             }
         }, 1000)
 	},

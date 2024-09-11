@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 require('dotenv').config();
 
 const client = new Client({ intents: [
@@ -15,13 +15,13 @@ const client = new Client({ intents: [
 async function init() {
 	client.commands = new Collection();
 
-	try {
-		await mongoose.connect(process.env.MONGO_URI);
-		console.log('[INFO] Connected to MongoDB.');
-	} catch (error) {
-		console.error(`[ERROR] Failed to connect to MongoDB: ${error}`);
-		process.exit(1);
-	}
+	// try {
+	// 	await mongoose.connect(process.env.MONGO_URI);
+	// 	console.log('[INFO] Connected to MongoDB.');
+	// } catch (error) {
+	// 	console.error(`[ERROR] Failed to connect to MongoDB: ${error}`);
+	// 	process.exit(1);
+	// }
 
 	const foldersPath = path.join(__dirname, 'commands');
 	const commandFolders = fs.readdirSync(foldersPath);
