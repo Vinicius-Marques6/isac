@@ -18,6 +18,10 @@ module.exports = {
             text = interaction.options.getString('text');
         }
 
+        // Check if text has a code block, if so, remove the quotes (```), and get the text inside the code block (code blocks can be in the middle of the text)
+        const codeBlockRegex = /```(?:latex)?\n?([\s\S]*?)```/g;
+        text = text.replace(codeBlockRegex, '$1');
+
         if (!text) {
             return await interaction.reply({ content: 'Please specify a text', ephemeral: true });
         }
