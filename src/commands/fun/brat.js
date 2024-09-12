@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, AttachmentBuilder, ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
+const { SlashCommandBuilder, AttachmentBuilder, ContextMenuCommandBuilder, ApplicationCommandType, ApplicationIntegrationType } = require('discord.js');
 const { createCanvas } = require('canvas');
 
 const options = {
@@ -9,7 +9,8 @@ module.exports = {
     data: [
         new ContextMenuCommandBuilder()
         .setName('Brat')
-        .setType(ApplicationCommandType.Message),
+        .setType(ApplicationCommandType.Message)
+		.setIntegrationTypes([ApplicationIntegrationType.GuildInstall, ApplicationIntegrationType.UserInstall]),
 
         new SlashCommandBuilder()
         .setName('brat')
