@@ -10,6 +10,7 @@ module.exports = {
         .addStringOption(option =>
             option.setName('name')
             .setDescription('The name of the emoji')
+            .setDescriptionLocalizations({ 'pt-BR': 'O nome do emoji' })
             .setRequired(true)
             .setAutocomplete(true)),
     async autocomplete(interaction) {
@@ -19,12 +20,20 @@ module.exports = {
         await interaction.respond(
             filtered.map(emoji => ({
                 name: emoji.name,
-                value: `<:${emoji.name}:${emoji.id}>`,
+                value: emoji.name,
             }))
         );
     },
 	async execute(interaction) {
         const name = interaction.options.getString('name');
-		await interaction.reply(name);
+
+        const emoji = interaction.client.application.emojis.cache.find(emoji => emoji.name === name);
+
+        if (!emoji) {
+            await interaction.reply({ content: 'Emoji not found!', ephemeral: true });
+            return;
+        }
+
+		await interaction.reply(`<:${emoji.name}:${emoji.id}>`);
 	},
 };
