@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const Canvas = require('canvas');
-const GIFEncoder = require('gifencoder');
+const { GIFEncoder, quantize , applyPalette } = require('gifenc');
 const path = require('node:path');
 
 const FRAMES = 10;
@@ -30,12 +30,7 @@ module.exports = {
             return await interaction.reply({ content: 'Please specify a user to pet', ephemeral: true });
         }
         
-        const encoder = new GIFEncoder(options.resolution, options.resolution);
-
-        encoder.start();
-        encoder.setRepeat(0);
-        encoder.setDelay(options.delay);
-        encoder.setTransparent();
+        const gif = GIFEncoder();
 
         const canvas = Canvas.createCanvas(options.resolution, options.resolution);
         const ctx = canvas.getContext('2d');
@@ -57,10 +52,14 @@ module.exports = {
             ctx.drawImage(avatar, options.resolution * offsetX, options.resolution * offsetY, options.resolution * width, options.resolution * height);
             ctx.drawImage(petGifCache[i], 0, 0, options.resolution, options.resolution);
 
-            encoder.addFrame(ctx);
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            const palette = quantize(data, 256);
+            const index = applyPalette(data, palette);
+
+            gif.writeFrame(index, canvas.width, canvas.height, { palette, transparent: true, delay: options.delay });
         }
 
-        encoder.finish();
-        await interaction.reply({ files: [{ attachment: encoder.out.getData(), name: 'pet.gif' }] });
+        gif.finish();
+        await interaction.reply({ files: [{ attachment: Buffer.from(gif.buffer), name: 'pet.gif' }] });
     }
 }

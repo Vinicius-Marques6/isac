@@ -13,7 +13,7 @@ module.exports = {
         let text;
         // Check if the interaction is a context menu command or a slash command
         if (interaction.isContextMenuCommand()) {
-            text = interaction.targetMessage.cleanContent;
+            text = interaction.targetMessage.content;
         } else {
             text = interaction.options.getString('text');
         }

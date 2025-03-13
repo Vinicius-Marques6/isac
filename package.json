@@ -11,13 +11,12 @@
   "author": "Vica",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.11.2",
-    "discord.js": "^14.16.1",
-    "dotenv": "^16.4.5",
-    "gifencoder": "^2.0.1",
-    "isac": "file:",
-    "mongoose": "^8.6.1",
-    "puppeteer": "^22.10.0",
+    "canvas": "^3.0.1",
+    "discord.js": "^14.17.3",
+    "dotenv": "^16.4.7",
+    "gifenc": "^1.0.3",
+    "mongoose": "^8.9.5",
+    "puppeteer": "^24.1.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-adblocker": "^2.13.6"
   }
